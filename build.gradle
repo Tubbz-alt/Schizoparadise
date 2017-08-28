@@ -1,8 +1,8 @@
 plugins {
     id 'com.github.johnrengelman.shadow' version '2.0.1'
+    id 'java'
     id 'idea'
     id 'io.franzbecker.gradle-lombok' version '1.10'
-    id 'java'
 }
 group 'com.proximyst'
 version '1.0-SNAPSHOT'
