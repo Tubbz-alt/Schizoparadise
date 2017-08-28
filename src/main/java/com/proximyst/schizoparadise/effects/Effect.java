@@ -1,5 +1,7 @@
 package com.proximyst.schizoparadise.effects;
 
+import com.proximyst.schizoparadise.Utilities;
+import com.proximyst.schizoparadise.data.SchizophrenicPlayer;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ public abstract class Effect {
     /**
      * The chance of the effect/symptom to occur in the first place. This adds up with the tick chance.
      */
+    // TODO: Make chance customisable.
     private final double chance; // chance is in percentage. 1-100
 
     /**
@@ -35,6 +38,14 @@ public abstract class Effect {
     public void tryApply(Player player) {
         double chance = ThreadLocalRandom.current().nextDouble(0, 100);
         if (chance <= getChance()) {
+            // TODO: Make checks automatic and done through Predicate<T>
+            // NIGHTMARE CHECK
+            if (!(this instanceof NightmareEffect) && Utilities.INST.isNight(player.getWorld())) {
+                // Only change from nightmare after it being
+                return;
+            }
+
+            SchizophrenicPlayer.getPlayer(player).setCurrentEffect(this);
             apply(player);
         }
     }
