@@ -1,5 +1,6 @@
 package com.proximyst.schizoparadise.data;
 
+import com.proximyst.schizoparadise.Paradise;
 import com.proximyst.schizoparadise.effects.Effect;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +10,16 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
 @Getter
 public class SchizophrenicPlayer {
     private static final Map<UUID, SchizophrenicPlayer> schizophrenics = new HashMap<>();
+
+    private final Player player;
+    @Setter private Effect currentEffect = null;
+
     public static SchizophrenicPlayer getPlayer(Player bukkitPlayer) {
         SchizophrenicPlayer player = schizophrenics.get(bukkitPlayer.getUniqueId());
         if (player != null) {
@@ -26,6 +32,7 @@ public class SchizophrenicPlayer {
 
     /**
      * Clear the schizophrenic map.
+     *
      * @throws SecurityException Thrown when one accesses the method without a null player.
      */
     public void clear() throws SecurityException {
@@ -35,6 +42,16 @@ public class SchizophrenicPlayer {
         SchizophrenicPlayer.schizophrenics.clear();
     }
 
-    private final Player player;
-    @Setter private Effect currentEffect = null;
+    /**
+     * Tries to apply a symptom to the player.
+     *
+     * @param main The SchizoParadise main instance.
+     */
+    public void trySymptom(Paradise main) {
+        Effect[] effectArray = (Effect[]) main.getEffects().toArray();
+        double chance = ThreadLocalRandom.current().nextDouble(0, 100);
+        Effect effect = chance <= 5.0 ? effectArray[Math.min(ThreadLocalRandom.current().nextInt(effectArray.length), effectArray.length)] : null;
+        if (effect == null) return;
+        effect.tryApply(player);
+    }
 }
