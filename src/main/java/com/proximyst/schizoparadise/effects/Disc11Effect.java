@@ -30,12 +30,12 @@ public class Disc11Effect extends Effect {
                     player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 3000, 1));
                 })
                 .delay(ThreadLocalRandom.current().nextInt(5, 20), TimeUnit.SECONDS)
+                .sync(() -> location.getWorld().playEffect(location, org.bukkit.Effect.RECORD_PLAY, 0))
+                .delay(10)
                 .sync(() -> {
                     if (player.isOnline())
                         player.removePotionEffect(PotionEffectType.BLINDNESS);
                 })
-                .delay(10)
-                .sync(() -> location.getWorld().playEffect(location, org.bukkit.Effect.RECORD_PLAY, 0))
                 .execute();
     }
 }
