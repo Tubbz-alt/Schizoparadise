@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class Disc11Effect extends Effect {
     private final TaskChainFactory chainFactory;
@@ -23,7 +24,7 @@ public class Disc11Effect extends Effect {
         );
         chainFactory.newChain()
                 .sync(() -> location.getWorld().playEffect(location, org.bukkit.Effect.RECORD_PLAY, Material.RECORD_11))
-                .delay(ThreadLocalRandom.current().nextInt(20, 60))
+                .delay(ThreadLocalRandom.current().nextInt(5, 20), TimeUnit.SECONDS)
                 .sync(() -> location.getWorld().playEffect(location, org.bukkit.Effect.RECORD_PLAY, 0))
                 .execute();
     }
