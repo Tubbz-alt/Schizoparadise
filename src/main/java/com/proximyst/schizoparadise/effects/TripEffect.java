@@ -1,6 +1,7 @@
 package com.proximyst.schizoparadise.effects;
 
 import co.aikar.taskchain.TaskChainFactory;
+import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -12,7 +13,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TripEffect extends Effect {
     private final TaskChainFactory factory;
-    private final Set<UUID> ineffect = new HashSet<>();
+    @Getter private final Set<UUID> ineffect = new HashSet<>();
 
     public TripEffect(TaskChainFactory factory) {
         super("Trip", 20);

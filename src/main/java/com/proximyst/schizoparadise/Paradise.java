@@ -9,6 +9,7 @@ import com.proximyst.schizoparadise.effects.Effect;
 import com.proximyst.schizoparadise.effects.NightmareEffect;
 import com.proximyst.schizoparadise.effects.TripEffect;
 import com.proximyst.schizoparadise.eventhandlers.BedHandler;
+import com.proximyst.schizoparadise.eventhandlers.DamageHandler;
 import com.proximyst.schizoparadise.scheduling.EffectTicking;
 import lombok.Getter;
 import org.bukkit.event.HandlerList;
@@ -40,7 +41,8 @@ public class Paradise extends JavaPlugin {
         effectTicker.runTaskTimer(this, 0L, 20L * 5); // every 5th second, everyone should have a 5%*symptom chance of experiencing schizophrenia symptoms
 
         Stream.of(
-                new BedHandler()
+                new BedHandler(),
+                new DamageHandler()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
