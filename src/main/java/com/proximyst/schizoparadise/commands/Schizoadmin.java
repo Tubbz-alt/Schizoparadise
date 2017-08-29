@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 import static com.proximyst.schizoparadise.Utilities.colour;
 
-@CommandAlias("schizo|schizoparadise|schizophrenia|schizoadmin|schadmin")
+@CommandAlias("schizo|schizoparadise|schizophrenia|schadmin")
 @CommandPermission("schizoparadise.commands.admin")
 public class Schizoadmin extends BaseCommand {
     private final String helpMessage;
@@ -25,17 +25,18 @@ public class Schizoadmin extends BaseCommand {
         StringBuilder builder = new StringBuilder();
         // TODO: Custom help message.
         Stream.of(
-                "&c---- Schizophrenic Paradise ----",
-                "&a/schizoadmin&c : The help message (this).",
-                "&a/schizoadmin help&c : The help message (this).",
-                "&a/schizoadmin trigger [Player]&c : Triggers a schizophrenic symptom for the player."
+                "&c----&e Schizophrenic Paradise&c ----",
+                "&a/schizoadmin&e : The help message (this).",
+                "&a/schizoadmin help&e : The help message (this).",
+                "&a/schizoadmin trigger [Player]&e : Triggers a schizophrenic symptom for the player."
         ).map(Utilities::colour).forEach(it -> builder.append(it).append('\n').append(ChatColor.RESET));
         helpMessage = builder.toString().split("\n$", 2)[0]; // Drop the last \n.
         this.paradise = paradise;
     }
 
+    @Default
     public void rootHelp(CommandSender sender) {
-        help(sender);
+        sender.sendMessage(helpMessage);
     }
 
     @Subcommand("help")
@@ -46,7 +47,7 @@ public class Schizoadmin extends BaseCommand {
     @Subcommand("trigger")
     @CommandAlias("force")
     @Syntax("[Player]")
-    public void trigger(CommandSender sender, @Optional OnlinePlayer player) {
+    public void trigger(CommandSender sender, @Optional OnlinePlayer player, @Default("-1") Integer chance, @Default("-1") Integer index) {
         if (!(sender instanceof Player) && player == null) {
             sender.sendMessage(colour("&cOnly players are allowed to trigger a symptom on themselves."));
             return;
@@ -54,6 +55,12 @@ public class Schizoadmin extends BaseCommand {
             player = new OnlinePlayer((Player) sender);
         }
         sender.sendMessage(colour("&aTrying to apply a symptom to &e", player.getPlayer().getName(), "&a."));
-        SchizophrenicPlayer.getPlayer(player.getPlayer()).trySymptom(paradise);
+        SchizophrenicPlayer wrapped = SchizophrenicPlayer.getPlayer(player.getPlayer());
+        if (chance == null || chance < 0)
+            wrapped.trySymptom(paradise);
+        else if (index == null || index < 0)
+            wrapped.trySymptom(paradise, chance);
+        else
+            wrapped.trySymptom(paradise, chance, index);
     }
 }

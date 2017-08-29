@@ -11,7 +11,7 @@ public class EyeBlinkEffect extends Effect {
     private final TaskChainFactory factory;
 
     public EyeBlinkEffect(TaskChainFactory factory) {
-        super("Blink", 80);
+        super("Blink");
         this.factory = factory;
     }
 
@@ -19,7 +19,7 @@ public class EyeBlinkEffect extends Effect {
     public void apply(Player player) {
         if (player.hasPotionEffect(PotionEffectType.BLINDNESS)) return;
         factory.newChain()
-                .sync(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 0)))
+                .sync(() -> player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 20, 1)))
                 .delay(ThreadLocalRandom.current().nextInt(3, 9)) // Wait random ticks, but not long, anyways.
                 .sync(() -> player.removePotionEffect(PotionEffectType.BLINDNESS))
                 .execute();

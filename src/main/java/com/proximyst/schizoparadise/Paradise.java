@@ -17,7 +17,9 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 @Getter // Nothing to hide. If a hook is needed, it's here.
@@ -31,6 +33,7 @@ public class Paradise extends JavaPlugin {
     public void onEnable() {
         chainFactory = BukkitTaskChainFactory.create(this);
         commandManager = new BukkitCommandManager(this);
+        commandManager.getLocales().setDefaultLocale(Locale.ENGLISH);
 
         Stream.of(
                 new TripEffect(chainFactory),
@@ -40,7 +43,7 @@ public class Paradise extends JavaPlugin {
 
         commandManager.registerCommand(new Schizoadmin(this));
         effectTicker = new EffectTicking(this);
-        effectTicker.runTaskTimer(this, 0L, 20L * 5); // every 5th second, everyone should have a 5%*symptom chance of experiencing schizophrenia symptoms
+        effectTicker.runTaskTimer(this, 20L, 20L * 15); // every 15th second, everyone should have a 5%*symptom chance of experiencing schizophrenia symptoms
 
         Stream.of(
                 new BedHandler(),
@@ -51,6 +54,9 @@ public class Paradise extends JavaPlugin {
     @Override
     public void onDisable() {
         new SchizophrenicPlayer(null).clear();
+        effects.clear();
+        commandManager.unregisterCommands();
+        chainFactory.shutdown(1, TimeUnit.SECONDS);
         HandlerList.unregisterAll(this);
         try {
             effectTicker.cancel();

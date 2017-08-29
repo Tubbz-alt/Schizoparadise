@@ -43,15 +43,39 @@ public class SchizophrenicPlayer {
     }
 
     /**
+     * Tries to apply a symptom to the player using the specified chance.
+     *
+     * @param main The SchizoParadise main instance.
+     * @param chance The chance to check against.
+     */
+    public void trySymptom(Paradise main, double chance) {
+        trySymptom(main, chance, ThreadLocalRandom.current().nextInt(0, main.getEffects().size()));
+    }
+
+    /**
+     * Tries to apply the specified index of Effect using the specified chance.
+     *
+     * @param main The SchizoParadise main instance.
+     * @param chance The chance to check against.
+     * @param index The index of the effect to use.
+     */
+    public void trySymptom(Paradise main, double chance, double index) {
+        Effect[] effectArray = main.getEffects().toArray(new Effect[main.getEffects().size()]);
+//        main.getLogger().info("DEBUG: effectArray.length -> " + effectArray.length);
+//        main.getLogger().info("DEBUG: chance -> " + chance);
+        Effect effect = chance <= 5.0 ? effectArray[Math.min((int) Math.max(0, index), effectArray.length - 1)] : null;
+//        main.getLogger().info("DEBUG: effect -> " + (effect == null ? "None" : effect.getName()));
+        if (effect == null) return;
+//        main.getLogger().info("DEBUG: Applying!");
+        effect.tryApply(player);
+    }
+
+    /**
      * Tries to apply a symptom to the player.
      *
      * @param main The SchizoParadise main instance.
      */
     public void trySymptom(Paradise main) {
-        Effect[] effectArray = (Effect[]) main.getEffects().toArray();
-        double chance = ThreadLocalRandom.current().nextDouble(0, 100);
-        Effect effect = chance <= 5.0 ? effectArray[Math.min(ThreadLocalRandom.current().nextInt(effectArray.length), effectArray.length)] : null;
-        if (effect == null) return;
-        effect.tryApply(player);
+        trySymptom(main, ThreadLocalRandom.current().nextDouble(0, 100));
     }
 }

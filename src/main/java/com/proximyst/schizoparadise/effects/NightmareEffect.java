@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 public class NightmareEffect extends Effect {
     public NightmareEffect() {
-        super("Nightmare", 16d);
+        super("Nightmare");
     }
 
     @Override

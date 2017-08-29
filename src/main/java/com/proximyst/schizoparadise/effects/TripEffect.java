@@ -16,29 +16,27 @@ public class TripEffect extends Effect {
     @Getter private final Set<UUID> ineffect = new HashSet<>();
 
     public TripEffect(TaskChainFactory factory) {
-        super("Trip", 20);
+        super("Trip");
         this.factory = factory;
     }
 
     @Override
     public void apply(Player player) {
-        double x = ThreadLocalRandom.current().nextDouble(5 * 2) - 5; // (5*2)-5 to make sure it can be negative.
-        double y = ThreadLocalRandom.current().nextDouble(4 * 2) - 4;
+        double x = ThreadLocalRandom.current().nextDouble(5 * 2) - 5; // (5*2)-5 to make sure it can be negative
+        double y = ThreadLocalRandom.current().nextDouble(4, 4 * 2);
         double z = ThreadLocalRandom.current().nextDouble(5 * 2) - 5;
+        Location location = player.getLocation();
         factory.newChain()
-                .syncFirst(() -> {
+                .sync(() -> {
                     ineffect.add(player.getUniqueId());
-                    Location location = player.getLocation();
+                    player.setVelocity(player.getVelocity().add(new Vector(x, y, z)));
                     player.getVelocity().add(new Vector(x, y, z));
-                    return location;
                 })
-                .delay(5)
-                .syncLast((loc) -> {
-                    if (player != null) {
-                        ineffect.remove(player.getUniqueId());
-                        if (player.isOnline())
-                            player.teleport(loc);
-                    }
+                .delay(30)
+                .sync(() -> {
+                    ineffect.remove(player.getUniqueId());
+                    if (player.isOnline())
+                        player.teleport(location);
                 })
                 .execute();
     }

@@ -30,6 +30,12 @@ dependencies {
     compile 'co.aikar:taskchain-bukkit:3.6.0'
 }
 
+compileJava {
+    options.fork = true
+    options.compilerArgs += ["-parameters"]
+}
+
 shadowJar {
     classifier = null
+    relocate 'co.aikar.commands', 'com.proximyst.schizparadise.acf'
 }
