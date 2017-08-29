@@ -36,7 +36,8 @@ public class Paradise extends JavaPlugin {
                 new TripEffect(chainFactory),
                 new NightmareEffect(),
                 new EyeBlinkEffect(chainFactory),
-                new Disc11Effect(chainFactory)
+                new Disc11Effect(chainFactory),
+                new HallucinativeSoundEffect()
         ).forEach(effects::add);
 
         commandManager.registerCommand(new Schizoadmin(this));
