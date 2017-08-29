@@ -15,18 +15,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class Paradise extends JavaPlugin {
-    /**
-     * @deprecated Try to rather use dependency injection where applicable. This is only for debug purposes.
-     */
-    @Deprecated @Getter private static Paradise instance;
     @Getter private final Set<Effect> effects = new HashSet<>();
     private BukkitCommandManager commandManager;
     private EffectTicking effectTicker;
-
-    public Paradise() {
-        //noinspection deprecation --- I marked it as deprecated, IntelliJ. Please.
-        instance = this;
-    }
 
     @Override
     public void onEnable() {
