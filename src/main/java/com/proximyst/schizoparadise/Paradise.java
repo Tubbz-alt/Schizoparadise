@@ -1,5 +1,7 @@
 package com.proximyst.schizoparadise;
 
+import co.aikar.commands.BukkitCommandManager;
+import com.proximyst.schizoparadise.commands.Schizoadmin;
 import com.proximyst.schizoparadise.data.SchizophrenicPlayer;
 import com.proximyst.schizoparadise.effects.Effect;
 import com.proximyst.schizoparadise.eventhandlers.BedHandler;
@@ -18,6 +20,7 @@ public class Paradise extends JavaPlugin {
      */
     @Deprecated @Getter private static Paradise instance;
     @Getter private final Set<Effect> effects = new HashSet<>();
+    private BukkitCommandManager commandManager;
     private EffectTicking effectTicker;
 
     public Paradise() {
@@ -27,6 +30,8 @@ public class Paradise extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        commandManager = new BukkitCommandManager(this);
+        commandManager.registerCommand(new Schizoadmin(this));
         effectTicker = new EffectTicking(this);
         effectTicker.runTaskTimer(this, 0L, 20L * 5); // every 5th second, everyone should have a 5%*symptom chance of experiencing schizophrenia symptoms
 
