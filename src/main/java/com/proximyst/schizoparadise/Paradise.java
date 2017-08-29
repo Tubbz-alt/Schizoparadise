@@ -5,10 +5,7 @@ import co.aikar.taskchain.BukkitTaskChainFactory;
 import co.aikar.taskchain.TaskChainFactory;
 import com.proximyst.schizoparadise.commands.Schizoadmin;
 import com.proximyst.schizoparadise.data.SchizophrenicPlayer;
-import com.proximyst.schizoparadise.effects.Effect;
-import com.proximyst.schizoparadise.effects.EyeBlinkEffect;
-import com.proximyst.schizoparadise.effects.NightmareEffect;
-import com.proximyst.schizoparadise.effects.TripEffect;
+import com.proximyst.schizoparadise.effects.*;
 import com.proximyst.schizoparadise.eventhandlers.BedHandler;
 import com.proximyst.schizoparadise.eventhandlers.DamageHandler;
 import com.proximyst.schizoparadise.scheduling.EffectTicking;
@@ -38,7 +35,8 @@ public class Paradise extends JavaPlugin {
         Stream.of(
                 new TripEffect(chainFactory),
                 new NightmareEffect(),
-                new EyeBlinkEffect(chainFactory)
+                new EyeBlinkEffect(chainFactory),
+                new Disc11Effect(chainFactory)
         ).forEach(effects::add);
 
         commandManager.registerCommand(new Schizoadmin(this));
