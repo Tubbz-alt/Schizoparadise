@@ -6,6 +6,16 @@ import org.bukkit.entity.Player;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class HallucinativeSoundEffect extends Effect {
+    private final Sound sounds[] = {
+            Sound.ENTITY_ZOMBIE_AMBIENT,
+            Sound.ENTITY_BAT_AMBIENT,
+            Sound.ENTITY_CAT_AMBIENT,
+            Sound.ENTITY_ENDERMEN_AMBIENT,
+            Sound.AMBIENT_CAVE,
+            Sound.ENTITY_SHULKER_AMBIENT,
+            Sound.ENTITY_SKELETON_AMBIENT
+    };
+
     public HallucinativeSoundEffect() {
         super("Hallucinative Sound");
     }
@@ -14,8 +24,8 @@ public class HallucinativeSoundEffect extends Effect {
     public void apply(Player player) {
         player.playSound(player.getLocation().clone().add(
                 ThreadLocalRandom.current().nextDouble(10) - 5,
-                ThreadLocalRandom.current().nextDouble(3) - 6,
+                -1 * ThreadLocalRandom.current().nextDouble(5, 20),
                 ThreadLocalRandom.current().nextDouble(10) - 5
-        ), Sound.ENTITY_ZOMBIE_AMBIENT, .8f, .8f);
+        ), sounds[ThreadLocalRandom.current().nextInt(sounds.length)], .8f, .8f);
     }
 }

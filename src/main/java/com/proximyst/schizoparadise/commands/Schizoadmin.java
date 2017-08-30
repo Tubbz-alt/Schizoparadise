@@ -2,7 +2,6 @@ package com.proximyst.schizoparadise.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import co.aikar.commands.contexts.OnlinePlayer;
 import com.proximyst.schizoparadise.Paradise;
 import com.proximyst.schizoparadise.Utilities;
 import com.proximyst.schizoparadise.data.SchizophrenicPlayer;
@@ -45,16 +44,9 @@ public class Schizoadmin extends BaseCommand {
     }
 
     @Subcommand("trigger")
-    @CommandAlias("force")
     @Syntax("[Player]")
-    public void trigger(CommandSender sender, @Optional OnlinePlayer player, @Default("-1") Integer chance, @Default("-1") Integer index) {
-        if (!(sender instanceof Player) && player == null) {
-            sender.sendMessage(colour("&cOnly players are allowed to trigger a symptom on themselves."));
-            return;
-        } else if (player == null) {
-            player = new OnlinePlayer((Player) sender);
-        }
-        sender.sendMessage(colour("&aTrying to apply a symptom to &e", player.getPlayer().getName(), "&a."));
+    public void trigger(Player player, @Default("-1") Integer chance, @Default("-1") Integer index) {
+        player.sendMessage(colour("&aTrying to apply a symptom."));
         SchizophrenicPlayer wrapped = SchizophrenicPlayer.getPlayer(player.getPlayer());
         if (chance == null || chance < 0)
             wrapped.trySymptom(paradise);
