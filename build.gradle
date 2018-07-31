@@ -1,0 +1,50 @@
+plugins {
+  id 'com.github.johnrengelman.shadow' version '2.0.4'
+  id 'org.jetbrains.kotlin.jvm' version '1.2.41'
+  id 'eu.hexagonmc.gradle.spigot' version '1.0'
+  id 'idea'
+}
+
+group = 'com.proximyst'
+version = '1.0.0'
+
+idea.module {
+  downloadJavadoc = true
+  downloadSources = true
+}
+
+repositories {
+  mavenCentral()
+  jcenter()
+
+  maven {
+    name = 'Aikar Maven Repository'
+    url = 'https://repo.aikar.co/nexus/content/groups/aikar/'
+  }
+  maven {
+    name = 'SpigotMC'
+    url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+  }
+  maven {
+    name = 'Sonatype OSS Nexus'
+    url = 'https://oss.sonatype.org/content/repositories/snapshots'
+  }
+}
+
+dependencies {
+  compileOnly 'org.spigotmc:spigot-api:1.12.2-R0.1-SNAPSHOT'
+  compile 'co.aikar:acf-bukkit:0.5.0-SNAPSHOT'
+  compile 'co.aikar:taskchain-bukkit:3.6.0'
+  compile 'org.jetbrains.kotlin:kotlin-stdlib-jre8'
+}
+
+spigot {
+  main 'com.proximyst.schizoparadise.Main'
+  name 'Schizoparadise'
+  description 'Schizophrenic brought into Minecraft'
+  author 'Proximyst'
+}
+
+shadowJar {
+  relocate 'co.aikar', 'com.proximyst.schizoparadise.dependencies_shadowed'
+}
